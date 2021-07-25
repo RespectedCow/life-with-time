@@ -1,15 +1,22 @@
-import sys
+# counter.py
+from PyQt5.QtCore import QThread, QObject, pyqtSignal, pyqtSlot, QTime
 import time
-import os
 
-from PyQt5.QtCore import (QTime, QCoreApplication, QObject, QRunnable, QThread,
-                          QThreadPool, pyqtSignal)
+class Counter(QObject):
+    finished = pyqtSignal()
+    timeMatched = pyqtSignal(int)
 
-sys.path.append(os.path.abspath("../../"))
-from launcher import current_running_array
 
-while True:
-    print("noob")
-    time.sleep(1)
-    for x in current_running_array:
-        print(x)
+    @pyqtSlot()
+    def procCounter(self, array): # A slot takes no params
+        self.shouldRun = True
+
+        while self.shouldRun:
+            time.sleep(1)
+            for entry in array:
+                if QTime.currentTime().hour() == entry[1].hour() and QTime.currentTime().minute() == entry[1].minute():
+                    self.timeMatched.emit(entry[0])   
+                    self.shouldRun = False             
+
+
+        self.finished.emit()
