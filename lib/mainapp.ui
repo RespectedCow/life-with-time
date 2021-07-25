@@ -18,7 +18,7 @@
     <property name="geometry">
      <rect>
       <x>220</x>
-      <y>30</y>
+      <y>20</y>
       <width>121</width>
       <height>31</height>
      </rect>
@@ -28,7 +28,7 @@
     <property name="geometry">
      <rect>
       <x>350</x>
-      <y>30</y>
+      <y>20</y>
       <width>91</width>
       <height>31</height>
      </rect>
@@ -54,7 +54,7 @@
     <property name="geometry">
      <rect>
       <x>100</x>
-      <y>290</y>
+      <y>270</y>
       <width>391</width>
       <height>31</height>
      </rect>
@@ -75,8 +75,8 @@
    <widget class="QLineEdit" name="EntryName">
     <property name="geometry">
      <rect>
-      <x>82</x>
-      <y>29</y>
+      <x>80</x>
+      <y>20</y>
       <width>131</width>
       <height>31</height>
      </rect>
@@ -88,8 +88,8 @@
    <widget class="QListWidget" name="entryTable">
     <property name="geometry">
      <rect>
-      <x>80</x>
-      <y>90</y>
+      <x>70</x>
+      <y>70</y>
       <width>431</width>
       <height>201</height>
      </rect>
@@ -101,8 +101,8 @@
    <widget class="QLabel" name="nothing">
     <property name="geometry">
      <rect>
-      <x>150</x>
-      <y>70</y>
+      <x>90</x>
+      <y>50</y>
       <width>47</width>
       <height>13</height>
      </rect>
@@ -114,14 +114,27 @@
    <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
-      <x>360</x>
-      <y>70</y>
+      <x>150</x>
+      <y>50</y>
       <width>47</width>
       <height>13</height>
      </rect>
     </property>
     <property name="text">
      <string>Time</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="removeEntry">
+    <property name="geometry">
+     <rect>
+      <x>450</x>
+      <y>20</y>
+      <width>91</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Remove</string>
     </property>
    </widget>
   </widget>
@@ -131,7 +144,7 @@
      <x>0</x>
      <y>0</y>
      <width>633</width>
-     <height>21</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
