@@ -10,6 +10,7 @@ maingui = loader.load_module('maingui')
 # function
 def main():
     app = QtWidgets.QApplication(sys.argv)
+    app.setQuitOnLastWindowClosed(False)
     app.setApplicationName("LifeWithTime")
     window = maingui.Ui(app)
     sys.exit(app.exec_())

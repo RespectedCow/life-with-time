@@ -11,6 +11,9 @@ background = loader.load_module('background')
 loader = importlib.machinery.SourceFileLoader('system_tray_mode', 'lib/src/system_tray_mode.py')
 system_tray_mode = loader.load_module('system_tray_mode')
 
+loader = importlib.machinery.SourceFileLoader('filemanager', 'lib/src/file_manager.py')
+FileManager = loader.load_module('filemanager')
+
 #variables
 defaultTime = QTime(12, 00, 00)
 current_running_array = []
@@ -35,26 +38,10 @@ class Ui(QMainWindow):
     sig_abort_workers = pyqtSignal()
     NUM_THREADS = 1
 
-    def exitProgramYes():
-        print("bruh")
-
     def closeProgram(self):
-        msgBox = QMessageBox(self)
-        msgBox.setIcon(QMessageBox.Information)
-        msgBox.setText("Message box pop up window")
-        msgBox.setWindowTitle("QMessageBox Example")
-        msgBox.setDefaultButton(QMessageBox.Yes)
-        msgBox.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
-        msgBox.setWindowModality(0)
-        msgBox.activateWindow()
-        msgBox.show()
+        reply = QMessageBox.question(self, "Close Program", "Do you really want to exit the program?", QMessageBox.Yes | QMessageBox.No)
 
-        ret = msgBox.exec_()
-        msgBox.deleteLater()
-
-        # reply = QMessageBox.question(self, "Close Program", "Do you really want to exit the program?", QMessageBox.Yes | QMessageBox.No)
-
-        if ret == QMessageBox.Yes:
+        if reply == QMessageBox.Yes:
             reply = QMessageBox.question(self, 'Edit Timetable?', 'Do you want to edit the timetable?',
             QMessageBox.Yes | QMessageBox.No) 
             if reply == QMessageBox.Yes:
@@ -65,12 +52,7 @@ class Ui(QMainWindow):
             self.tray_icon.hide()
             self.thread.quit()
         if QMessageBox.No:
-            print("bruh")
-
-    def msgbtn(self, option):
-        if option == "Yes":
-            self.show()
-            self.obj.shouldRun = False
+            print("Returning to normal functions")
 
     def timeMatched(self, index):
         name = current_running_array[index][0]
@@ -81,20 +63,25 @@ class Ui(QMainWindow):
         msg.setText(f"It's time to {name}. Do you want to change your timetable?")
         msg.setWindowTitle(name) 
         msg.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
-        msg.buttonClicked.connect(self.msgbtn)
 
         retval = msg.exec_()
+
+        if retval == QMessageBox.Yes:
+           self.show()
+           self.thread.quit()
+           self.worker.shouldRun = False 
 
     def updateEntries(self):
         self.entryTable.clear()
 
         for entry in current_running_array:
             time = QTime.toString(entry[1])
-
-            self.entryTable.addItem(f"{entry[0]}  {time}")
+            entry = QTreeWidgetItem(self.entryTable, [entry[0], time])
 
     def removeEntryfunction(self):
-        name, time = self.entryTable.currentItem().text().split()
+        time = self.entryTable.currentItem().text(1)
+        
+        print(time)
         index = 0
 
         time = QTime.fromString(time)
@@ -109,6 +96,22 @@ class Ui(QMainWindow):
 
     def changeMessage(self, message):
         self.label.setText(message)
+
+    def openTimetable(self):
+        new_array = FileManager.OpenFile(self)
+
+        #clear array
+        index = 0
+        for x in current_running_array:
+            current_running_array.pop(index)
+            index += 1
+
+        # assign
+        for x in new_array:
+            current_running_array.append([x[0], x[1]])
+
+        self.updateEntries()
+        self.changeMessage("Successfully opened a timetable file!")
 
     def compileEntryData(self):
         name = self.EntryName.text()
@@ -157,9 +160,10 @@ class Ui(QMainWindow):
 
         # control worker:
         self.sig_abort_workers.connect(self.worker.abort)
+        self.worker.timeMatched.connect(self.timeMatched)
         self.hide()
 
-        self.thread.started.connect(self.worker.work(current_running_array, app))
+        self.thread.started.connect(lambda: self.worker.work(current_running_array, app))
         self.thread.start()
 
     def __init__(self, app):
@@ -179,6 +183,9 @@ class Ui(QMainWindow):
         self.removeEntry.clicked.connect(self.removeEntryfunction)
         self.addEntry.clicked.connect(self.compileEntryData)
         self.runbutton.clicked.connect(lambda: self.run(app))
+
+        self.actionSave.triggered.connect(lambda: FileManager.saveFile(current_running_array, self))
+        self.actionOpen.triggered.connect(self.openTimetable)
 
         #Stuff
         self.EntryTime.setTime(defaultTime)
