@@ -38,6 +38,14 @@ class Ui(QMainWindow):
     sig_abort_workers = pyqtSignal()
     NUM_THREADS = 1
 
+    def newFile(self):
+        #clearing
+        current_running_array.clear()
+
+        self.updateEntries()
+
+        self.setWindowTitle("Life With Time - Untitled")
+
     def closeProgram(self):
         reply = QMessageBox.question(self, "Close Program", "Do you really want to exit the program?", QMessageBox.Yes | QMessageBox.No)
 
@@ -169,7 +177,7 @@ class Ui(QMainWindow):
     def __init__(self, app):
         QMainWindow.__init__(self)
         uic.loadUi('./lib/mainapp.ui', self)
-        self.setWindowTitle("LifeWithTime")
+        self.setWindowTitle("LifeWithTime - Untitled")
 
         #Icons
         app_icon = QtGui.QIcon()
@@ -186,6 +194,7 @@ class Ui(QMainWindow):
 
         self.actionSave.triggered.connect(lambda: FileManager.saveFile(current_running_array, self))
         self.actionOpen.triggered.connect(self.openTimetable)
+        self.actionNew.triggered.connect(self.newFile)
 
         #Stuff
         self.EntryTime.setTime(defaultTime)
