@@ -1,6 +1,3 @@
-import fileinput as fi
-import glob
-import os.path
 from PyQt5.QtWidgets import QMessageBox, QFileDialog
 from PyQt5.QtCore import QTime
 
@@ -10,7 +7,7 @@ def OpenFile(gui):
 
     array = []
 
-    if fileName:
+    if fileName[0] != "":
         f = open(fileName[0])
 
         for line in f:

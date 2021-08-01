@@ -1,8 +1,8 @@
 #Imports
-from PyQt5 import uic, QtGui
+from PyQt5 import QtGui
 from PyQt5.QtGui import * 
 from PyQt5.QtWidgets import *
-from PyQt5.QtCore import QTime, QRunnable, QThreadPool, QCoreApplication, QThread, QProcess, Qt, pyqtSignal, QSize
+from PyQt5.QtCore import QTime, QRunnable, QThreadPool, QCoreApplication, QThread, Qt, pyqtSignal, QSize, QRect, QMetaObject
 import sys
 import importlib
 loader = importlib.machinery.SourceFileLoader('background', 'lib/src/background.py')
@@ -176,7 +176,69 @@ class Ui(QMainWindow):
 
     def __init__(self, app):
         QMainWindow.__init__(self)
-        uic.loadUi('./lib/mainapp.ui', self)
+
+        # Create UI
+        self.setObjectName("MainWindow")
+        self.resize(633, 358)
+        self.centralwidget = QWidget(self)
+        self.centralwidget.setObjectName("centralwidget")
+        self.EntryTime = QTimeEdit(self.centralwidget)
+        self.EntryTime.setGeometry(QRect(220, 20, 121, 31))
+        self.EntryTime.setObjectName("EntryTime")
+        self.addEntry = QPushButton(self.centralwidget)
+        self.addEntry.setGeometry(QRect(350, 20, 91, 31))
+        self.addEntry.setObjectName("addEntry")
+        self.runbutton = QPushButton(self.centralwidget)
+        self.runbutton.setGeometry(QRect(520, 220, 71, 31))
+        self.runbutton.setObjectName("runbutton")
+        self.label = QLabel(self.centralwidget)
+        self.label.setGeometry(QRect(100, 270, 391, 31))
+        self.label.setTextFormat(Qt.MarkdownText)
+        self.label.setScaledContents(True)
+        self.label.setAlignment(Qt.AlignCenter)
+        self.label.setObjectName("label")
+        self.EntryName = QLineEdit(self.centralwidget)
+        self.EntryName.setGeometry(QRect(80, 20, 131, 31))
+        self.EntryName.setText("")
+        self.EntryName.setObjectName("EntryName")
+        self.nothing = QLabel(self.centralwidget)
+        self.nothing.setGeometry(QRect(170, 50, 47, 13))
+        self.nothing.setObjectName("nothing")
+        self.label_2 = QLabel(self.centralwidget)
+        self.label_2.setGeometry(QRect(270, 50, 47, 13))
+        self.label_2.setObjectName("label_2")
+        self.removeEntry = QPushButton(self.centralwidget)
+        self.removeEntry.setGeometry(QRect(450, 20, 91, 31))
+        self.removeEntry.setObjectName("removeEntry")
+        self.entryTable = QTreeWidget(self.centralwidget)
+        self.entryTable.setGeometry(QRect(160, 80, 256, 192))
+        self.entryTable.setIndentation(0)
+        self.entryTable.setObjectName("entryTable")
+        self.setCentralWidget(self.centralwidget)
+        self.menubar = QMenuBar(self)
+        self.menubar.setGeometry(QRect(0, 0, 633, 21))
+        self.menubar.setObjectName("menubar")
+        self.menuFile = QMenu(self.menubar)
+        self.menuFile.setObjectName("menuFile")
+        self.setMenuBar(self.menubar)
+        self.statusbar = QStatusBar(self)
+        self.statusbar.setObjectName("statusbar")
+        self.setStatusBar(self.statusbar)
+        self.actionNew = QAction(self)
+        self.actionNew.setObjectName("actionNew")
+        self.actionSave = QAction(self)
+        self.actionSave.setObjectName("actionSave")
+        self.actionOpen = QAction(self)
+        self.actionOpen.setObjectName("actionOpen")
+        self.menuFile.addAction(self.actionNew)
+        self.menuFile.addAction(self.actionSave)
+        self.menuFile.addAction(self.actionOpen)
+        self.menubar.addAction(self.menuFile.menuAction())
+
+        self.retranslateUi(self)
+        QMetaObject.connectSlotsByName(self)
+
+        #Normal Stuff
         self.setWindowTitle("LifeWithTime - Untitled")
 
         #Icons
@@ -202,6 +264,35 @@ class Ui(QMainWindow):
         self.__objs = None
 
         self.show()
+
+    def retranslateUi(self, MainWindow):
+        _translate = QCoreApplication.translate
+        self.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        self.addEntry.setText(_translate("MainWindow", "Add"))
+        self.runbutton.setText(_translate("MainWindow", "Run"))
+        self.label.setText(_translate("MainWindow", "Messages will be displayed here"))
+        self.nothing.setText(_translate("MainWindow", "Name"))
+        self.label_2.setText(_translate("MainWindow", "Time"))
+        self.removeEntry.setText(_translate("MainWindow", "Remove"))
+        self.entryTable.headerItem().setText(0, _translate("MainWindow", "Name"))
+        self.entryTable.headerItem().setText(1, _translate("MainWindow", "Time"))
+        self.menuFile.setTitle(_translate("MainWindow", "File"))
+        self.actionNew.setText(_translate("MainWindow", "New"))
+        self.actionNew.setShortcut(_translate("MainWindow", "Ctrl+N"))
+        self.actionSave.setText(_translate("MainWindow", "Save"))
+        self.actionSave.setShortcut(_translate("MainWindow", "Ctrl+S"))
+        self.actionOpen.setText(_translate("MainWindow", "Open"))
+        self.actionOpen.setShortcut(_translate("MainWindow", "Ctrl+O"))
+
+    def closeEvent(self,event):
+        result = QtGui.QMessageBox.question(self,
+                      "Confirm Exit...",
+                      "Are you sure you want to exit ?",
+                      QtGui.QMessageBox.Yes| QtGui.QMessageBox.No)
+        event.ignore()
+
+        if result == QtGui.QMessageBox.Yes:
+            sys.exit()
 
 def main():
     app = QApplication([])
