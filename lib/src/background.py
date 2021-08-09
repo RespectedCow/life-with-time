@@ -27,11 +27,12 @@ class Counter(QObject):
             for entry in entries:
                 if QTime.currentTime().hour() == entry[1].hour() and QTime.currentTime().minute() == entry[1].minute() and QTime.currentTime().second() == entry[1].second():
                     self.timeMatched.emit(index)
+                index += 1
 
             if self.__abort:
                 # note that "step" value will not necessarily be same for every thread
                 break   
-            index += 1
+            
 
     def abort(self):
         self.__abort = True

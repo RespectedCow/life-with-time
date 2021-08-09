@@ -7,15 +7,18 @@ def OpenFile(gui):
 
     array = []
 
+    gui.setWindowTitle("Life With Time - " + fileName[1])
+
     if fileName[0] != "":
         f = open(fileName[0])
 
         for line in f:
-            if line != "":
-                name, time = line.split()
-                time = QTime.fromString(time)
+            datapacked = line.split()
+            if datapacked != []:
+                time = QTime.fromString(datapacked[1])
+                print(datapacked[0])
 
-                array.append([name, time])                
+                array.append([datapacked[0], time])                
 
         
         return array
@@ -23,7 +26,7 @@ def OpenFile(gui):
         reply = QMessageBox.warning(gui, 'Error', 'Something did not work.',
             QMessageBox.Ok)
 
-    gui.setWindowTitle("Life With Time - " + fileName[1])
+        return "Unsuccessful"    
             
 
 def saveFile(array, gui):
@@ -45,4 +48,4 @@ def saveFile(array, gui):
                     f.write(f"\n{x[0]} {QTime.toString(x[1])}")
 
     #Rename the window
-    gui.setWindowTitle("Life With Time - " + fileName)
+    gui.setWindowTitle("Life With Time - " + fileName[0])
