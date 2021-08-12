@@ -14,6 +14,9 @@ system_tray_mode = loader.load_module('system_tray_mode')
 loader = importlib.machinery.SourceFileLoader('filemanager', 'lib/src/file_manager.py')
 FileManager = loader.load_module('filemanager')
 
+loader = importlib.machinery.SourceFileLoader('Settings', 'lib/src/settings.py')
+SettingsManager = loader.load_module('Settings')
+
 #variables
 defaultTime = QTime(12, 00, 00)
 current_running_array = []
@@ -205,13 +208,17 @@ class Ui(QMainWindow):
         self.actionOpen.triggered.connect(self.openTimetable)
         self.actionNew.triggered.connect(self.newFile)
         self.actionClose.triggered.connect(self.close)
+        self.actionSettings.triggered.connect(self.settingsWindow)
 
         #Stuff
         self.EntryTime.setTime(defaultTime)
         self.__threads = None
-        self.__objs = None
 
         self.show()
+
+    def settingsWindow(self):
+        self.settingWindow = SettingsManager.Settings()
+        self.settingWindow.show()
 
     def closeEvent(self,event):
         result = QMessageBox.question(self,
