@@ -8,11 +8,11 @@ maingui = loader.load_module('maingui')
 
 # function
 def main():
-    app = QtGui.QApplication.instance()
+    app = QtWidgets.QApplication.instance()
 
     # check apps
     if app is None:
-        app = QtGui.QApplication(sys.argv)
+        app = QtWidgets.QApplication(sys.argv)
     else:
         msg = QMessageBox()
         msg.setIcon(QMessageBox.Warning)
