@@ -1,0 +1,3 @@
+messages:
+  timematched: 'It''s time to {name}. Do you want to change your timetable? '
+twentyrules: true

@@ -16,7 +16,7 @@
   <widget class="QScrollArea" name="scrollArea">
    <property name="geometry">
     <rect>
-     <x>10</x>
+     <x>0</x>
      <y>10</y>
      <width>401</width>
      <height>261</height>
@@ -36,7 +36,7 @@
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>391</width>
+      <width>382</width>
       <height>259</height>
      </rect>
     </property>
@@ -77,6 +77,9 @@
      </property>
     </widget>
     <widget class="QPlainTextEdit" name="timematchEdit">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
      <property name="geometry">
       <rect>
        <x>150</x>
@@ -115,9 +118,35 @@
       <string/>
      </property>
     </widget>
+    <widget class="QLabel" name="label_4">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>80</y>
+       <width>91</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>2020 rules: </string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="twentyrules">
+     <property name="geometry">
+      <rect>
+       <x>150</x>
+       <y>80</y>
+       <width>70</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Yes or no?</string>
+     </property>
+    </widget>
    </widget>
   </widget>
-  <widget class="QPushButton" name="applyButton">
+  <widget class="QPushButton" name="cancelButton">
    <property name="geometry">
     <rect>
      <x>310</x>
@@ -127,10 +156,10 @@
     </rect>
    </property>
    <property name="text">
-    <string>Apply</string>
+    <string>Cancel</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="OkButton">
+  <widget class="QPushButton" name="applyButton">
    <property name="geometry">
     <rect>
      <x>210</x>

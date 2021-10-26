@@ -178,7 +178,7 @@ class Ui(QMainWindow):
         self.worker.timeMatched.connect(self.timeMatched)
         self.hide()
 
-        self.thread.started.connect(lambda: self.worker.work(current_running_array, app))
+        self.thread.started.connect(lambda: self.worker.work(current_running_array, app, self))
         self.thread.start()
 
     def __init__(self, app):
